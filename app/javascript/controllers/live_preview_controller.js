@@ -1,15 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ["editor", "preview", "successMessage"]
+  static targets = ["editor", "preview", "solutionPreview", "successMessage"]
 
-    connect() {
-        this.updatePreview()
-    }
+  connect() {
+    this.updatePreview()
+    this.updateSolutionPreview()
+  }
 
-    updatePreview() {
-        const code = this.editorTarget.value
-        const html = `
+  updatePreview() {
+    const code = this.editorTarget.value
+    const html = `
       <!DOCTYPE html>
       <html>
         <head>
@@ -22,41 +23,60 @@ export default class extends Controller {
         </body>
       </html>
     `
-        const iframe = this.previewTarget
-        iframe.srcdoc = html
+    const iframe = this.previewTarget
+    iframe.srcdoc = html
+  }
+
+  updateSolutionPreview() {
+    const solutionCode = this.editorTarget.dataset.solution.replace(/\\n/g, '\n')
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <script src="https://cdn.tailwindcss.com"></script>
+        </head>
+        <body class="p-4">
+          ${solutionCode}
+        </body>
+      </html>
+    `
+    const iframe = this.solutionPreviewTarget
+    iframe.srcdoc = html
+  }
+
+  checkAnswer() {
+    const userCode = this.normalizeCode(this.editorTarget.value)
+    const solutionCode = this.normalizeCode(this.editorTarget.dataset.solution)
+    const levelId = this.editorTarget.dataset.levelId
+
+    if (userCode === solutionCode) {
+      this.showSuccess()
+      this.saveProgress(levelId)
+    } else {
+      alert("Not quite! Try again.")
     }
+  }
 
-    checkAnswer() {
-        const userCode = this.normalizeCode(this.editorTarget.value)
-        const solutionCode = this.normalizeCode(this.editorTarget.dataset.solution)
-        const levelId = this.editorTarget.dataset.levelId
+  normalizeCode(code) {
+    return code.replace(/\s+/g, ' ').trim()
+  }
 
-        if (userCode === solutionCode) {
-            this.showSuccess()
-            this.saveProgress(levelId)
-        } else {
-            alert("Not quite! Try again.")
-        }
-    }
+  showSuccess() {
+    this.successMessageTarget.classList.remove("hidden")
+    // Confetti effect could be added here
+  }
 
-    normalizeCode(code) {
-        return code.replace(/\s+/g, ' ').trim()
-    }
+  saveProgress(levelId) {
+    const csrfToken = document.querySelector("[name='csrf-token']").content
 
-    showSuccess() {
-        this.successMessageTarget.classList.remove("hidden")
-        // Confetti effect could be added here
-    }
-
-    saveProgress(levelId) {
-        const csrfToken = document.querySelector("[name='csrf-token']").content
-
-        fetch(`/levels/${levelId}/user_progresses`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": csrfToken
-            }
-        })
-    }
+    fetch(`/levels/${levelId}/user_progresses`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken
+      }
+    })
+  }
 }

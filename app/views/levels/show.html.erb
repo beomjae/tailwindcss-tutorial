@@ -46,7 +46,7 @@
           data-level-id="<%= @level.id %>"
           class="flex-1 w-full h-full bg-gray-900 text-gray-100 p-4 font-mono text-sm focus:outline-none resize-none"
           spellcheck="false"
-        ><%= @level.initial_code %></textarea>
+        ><%= @level.initial_code.gsub('\\n', "\n") %></textarea>
         
         <!-- Success Message Overlay -->
         <div data-live-preview-target="successMessage" class="hidden absolute inset-0 bg-gray-900/90 flex items-center justify-center z-10">
@@ -69,11 +69,33 @@
         <span><%= t('levels.show.live_preview') %></span>
         <span class="text-[10px] text-gray-400"><%= t('levels.show.powered_by') %></span>
       </div>
-      <iframe 
-        data-live-preview-target="preview"
-        class="flex-1 w-full h-full border-none"
-        sandbox="allow-scripts"
-      ></iframe>
+      
+      <!-- Split Preview Area -->
+      <div class="flex-1 flex flex-col">
+        <!-- User's Result -->
+        <div class="flex-1 flex flex-col border-b border-gray-200">
+          <div class="px-3 py-1.5 bg-blue-50 border-b border-blue-100 text-xs text-blue-700 font-medium">
+            당신의 결과
+          </div>
+          <iframe 
+            data-live-preview-target="preview"
+            class="flex-1 w-full h-full border-none"
+            sandbox="allow-scripts"
+          ></iframe>
+        </div>
+        
+        <!-- Target Result -->
+        <div class="flex-1 flex flex-col">
+          <div class="px-3 py-1.5 bg-green-50 border-b border-green-100 text-xs text-green-700 font-medium">
+            목표 결과
+          </div>
+          <iframe 
+            data-live-preview-target="solutionPreview"
+            class="flex-1 w-full h-full border-none"
+            sandbox="allow-scripts"
+          ></iframe>
+        </div>
+      </div>
     </div>
   </div>
 </div>
