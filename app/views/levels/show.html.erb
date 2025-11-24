@@ -2,15 +2,15 @@
   <!-- Header -->
   <header class="bg-gray-800 text-white p-4 flex justify-between items-center shrink-0">
     <div class="flex items-center space-x-4">
-      <%= link_to "Home", levels_path, class: "text-gray-300 hover:text-white" %>
-      <h1 class="text-xl font-bold">Level <%= @level.number %>: <%= @level.title %></h1>
+      <%= link_to t('levels.show.home'), levels_path, class: "text-gray-300 hover:text-white" %>
+      <h1 class="text-xl font-bold"><%= t('levels.show.level') %> <%= @level.number %>: <%= @level.title %></h1>
     </div>
     <div class="flex space-x-2">
       <% if @prev_level %>
-        <%= link_to "Previous", level_path(@prev_level), class: "px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded" %>
+        <%= link_to t('levels.show.previous'), level_path(@prev_level), class: "px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded" %>
       <% end %>
       <% if @next_level %>
-        <%= link_to "Next", level_path(@next_level), class: "px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded" %>
+        <%= link_to t('levels.show.next'), level_path(@next_level), class: "px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded" %>
       <% end %>
     </div>
   </header>
@@ -21,22 +21,22 @@
     <div class="w-1/2 flex flex-col border-r border-gray-300">
       <!-- Instructions -->
       <div class="p-6 bg-gray-50 border-b border-gray-200 overflow-y-auto h-1/3">
-        <h2 class="text-lg font-semibold mb-2">Instructions</h2>
+        <h2 class="text-lg font-semibold mb-2"><%= t('levels.show.instructions') %></h2>
         <p class="text-gray-700 mb-4"><%= @level.instructions %></p>
         <div class="bg-blue-50 p-4 rounded text-sm text-blue-800">
-          <strong>Goal:</strong> <%= @level.description %>
+          <strong><%= t('levels.show.goal') %>:</strong> <%= @level.description %>
         </div>
       </div>
 
       <!-- Editor -->
       <div class="flex-1 flex flex-col bg-gray-900 text-white relative">
         <div class="px-4 py-2 bg-gray-800 text-xs text-gray-400 uppercase tracking-wider flex justify-between items-center">
-          <span>HTML Editor</span>
+          <span><%= t('levels.show.html_editor') %></span>
           <button 
             data-action="live-preview#checkAnswer"
             class="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded text-xs font-bold transition"
           >
-            Check Answer
+            <%= t('levels.show.check_answer') %>
           </button>
         </div>
         <textarea 
@@ -51,12 +51,12 @@
         <!-- Success Message Overlay -->
         <div data-live-preview-target="successMessage" class="hidden absolute inset-0 bg-gray-900/90 flex items-center justify-center z-10">
           <div class="text-center">
-            <h3 class="text-2xl font-bold text-green-400 mb-2">Level Completed! 🎉</h3>
-            <p class="text-gray-300 mb-4">Great job! You've mastered this concept.</p>
+            <h3 class="text-2xl font-bold text-green-400 mb-2"><%= t('levels.show.success.title') %></h3>
+            <p class="text-gray-300 mb-4"><%= t('levels.show.success.message') %></p>
             <% if @next_level %>
-              <%= link_to "Next Level →", level_path(@next_level), class: "inline-block bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold transition" %>
+              <%= link_to t('levels.show.success.next_level'), level_path(@next_level), class: "inline-block bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-lg font-semibold transition" %>
             <% else %>
-              <%= link_to "Back to Home", levels_path, class: "inline-block bg-gray-600 hover:bg-gray-500 text-white px-6 py-2 rounded-lg font-semibold transition" %>
+              <%= link_to t('levels.show.success.back_home'), levels_path, class: "inline-block bg-gray-600 hover:bg-gray-500 text-white px-6 py-2 rounded-lg font-semibold transition" %>
             <% end %>
           </div>
         </div>
@@ -66,8 +66,8 @@
     <!-- Right Panel: Live Preview -->
     <div class="w-1/2 flex flex-col bg-white">
       <div class="px-4 py-2 bg-gray-100 border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wider flex justify-between items-center">
-        <span>Live Preview</span>
-        <span class="text-[10px] text-gray-400">Powered by Tailwind Play CDN</span>
+        <span><%= t('levels.show.live_preview') %></span>
+        <span class="text-[10px] text-gray-400"><%= t('levels.show.powered_by') %></span>
       </div>
       <iframe 
         data-live-preview-target="preview"

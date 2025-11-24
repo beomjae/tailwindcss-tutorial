@@ -1,0 +1,21 @@
+ko:
+  levels:
+    index:
+      title: "Tailwind CSS 튜토리얼"
+      level: "레벨"
+    show:
+      home: "홈"
+      previous: "이전"
+      next: "다음"
+      level: "레벨"
+      instructions: "지시사항"
+      goal: "목표"
+      html_editor: "HTML 에디터"
+      check_answer: "정답 확인"
+      live_preview: "라이브 미리보기"
+      powered_by: "Tailwind Play CDN 제공"
+      success:
+        title: "레벨 완료! 🎉"
+        message: "잘하셨습니다! 이 개념을 마스터하셨군요."
+        next_level: "다음 레벨 →"
+        back_home: "홈으로 돌아가기"
